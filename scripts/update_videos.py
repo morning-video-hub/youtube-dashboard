@@ -1,19 +1,22 @@
 #!/usr/bin/env python3
 """
-YouTube RSSから登録チャンネルの新着動画を取得し、
-公開字幕・自動生成字幕から「抽出型要約」を無料で作成します。
+自宅PC用・無料YouTube字幕要約。
 
-外部の生成AI APIやAPIキーは使用しません。
+- YouTube RSSから登録チャンネルの新着動画を取得
+- 公開字幕・自動生成字幕から抽出型要約を生成
+- OpenAIなどの有料APIは使用しない
+- 既に字幕要約済みの動画は再利用し、YouTubeへのアクセス回数を抑える
 """
 
 from __future__ import annotations
 
 import html
 import json
-import math
 import os
+import random
 import re
 import sys
+import time
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -29,6 +32,8 @@ OUTPUT_PATH = ROOT / "data" / "videos.json"
 
 MAX_VIDEOS_PER_CHANNEL = int(os.getenv("MAX_VIDEOS_PER_CHANNEL", "8"))
 SUMMARY_MAX_CHARS = int(os.getenv("SUMMARY_MAX_CHARS", "320"))
+TRANSCRIPT_WAIT_MIN = float(os.getenv("TRANSCRIPT_WAIT_MIN", "1.5"))
+TRANSCRIPT_WAIT_MAX = float(os.getenv("TRANSCRIPT_WAIT_MAX", "3.0"))
 RSS_TEMPLATE = "https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}"
 
 YTT_API = YouTubeTranscriptApi()
@@ -68,8 +73,7 @@ def clean_text(value: str | None) -> str:
 
 def normalize_for_compare(text: str) -> str:
     text = text.lower()
-    text = re.sub(r"[\s、。！？!?,.・「」『』【】（）()：:ー\-]", "", text)
-    return text
+    return re.sub(r"[\s、。！？!?,.・「」『』【】（）()：:ー\-]", "", text)
 
 
 def char_ngrams(text: str, size: int = 2) -> list[str]:
@@ -86,7 +90,6 @@ def split_into_sentences(text: str) -> list[str]:
     if not text:
         return []
 
-    # 字幕は句読点が少ないことがあるため、通常の文分割後に長文も分割する
     rough = re.split(r"(?<=[。！？!?])\s+|[\r\n]+", text)
     sentences: list[str] = []
 
@@ -99,7 +102,6 @@ def split_into_sentences(text: str) -> list[str]:
             sentences.append(part)
             continue
 
-        # 句読点がない長い字幕を読点や接続部分で切る
         chunks = re.split(
             r"(?<=[、,])|(?=しかし|一方で|つまり|そのため|そして|では|結論として)",
             part,
@@ -120,7 +122,6 @@ def split_into_sentences(text: str) -> list[str]:
         if current:
             sentences.append(current)
 
-    # 極端に短い断片は前後と結合
     merged: list[str] = []
     for sentence in sentences:
         if merged and len(sentence) < 30:
@@ -129,6 +130,22 @@ def split_into_sentences(text: str) -> list[str]:
             merged.append(sentence)
 
     return merged
+
+
+def load_existing() -> dict[str, dict[str, Any]]:
+    if not OUTPUT_PATH.exists():
+        return {}
+
+    try:
+        payload = json.loads(OUTPUT_PATH.read_text(encoding="utf-8"))
+        return {
+            item["videoId"]: item
+            for item in payload.get("videos", [])
+            if item.get("videoId")
+        }
+    except Exception as exc:
+        print(f"既存データの読み込みに失敗しました: {exc}", file=sys.stderr)
+        return {}
 
 
 def fetch_transcript(video_id: str) -> tuple[str, str]:
@@ -142,7 +159,6 @@ def fetch_transcript(video_id: str) -> tuple[str, str]:
     except Exception as exc:
         errors.append(str(exc))
 
-    # 日本語・英語以外しかない場合も、取得可能な字幕を試す
     try:
         transcript_list = YTT_API.list(video_id)
         transcript = next(iter(transcript_list))
@@ -155,7 +171,7 @@ def fetch_transcript(video_id: str) -> tuple[str, str]:
 
     detail = " / ".join(errors)
     print(
-        f"字幕取得失敗: {video_id}: {detail[:500] or '字幕なし'}",
+        f"字幕取得失敗: {video_id}: {detail[:800] or '字幕なし'}",
         file=sys.stderr,
     )
     return "", "unavailable"
@@ -178,7 +194,8 @@ def is_unhelpful(sentence: str) -> bool:
         return True
 
     phrase_hits = sum(
-        1 for phrase in STOP_PHRASES
+        1
+        for phrase in STOP_PHRASES
         if normalize_for_compare(phrase) in normalized
     )
     return phrase_hits >= 2
@@ -209,7 +226,6 @@ def extractive_summary(title: str, transcript: str) -> str:
         if not grams:
             continue
 
-        # 文中の頻出語を評価。ただし極端に多い一般語は影響を抑える
         frequency_score = sum(
             min(corpus_ngrams[gram], 8)
             for gram in unique_grams
@@ -232,7 +248,6 @@ def extractive_summary(title: str, transcript: str) -> str:
             r"結論|つまり|要するに|重要|ポイント|今後|必要|理由",
             sentence,
         ) else 0.0
-
         length_score = 1.0 - min(abs(len(sentence) - 100) / 130, 0.8)
 
         score = (
@@ -274,10 +289,9 @@ def extractive_summary(title: str, transcript: str) -> str:
     if not selected:
         return ""
 
-    # 動画中の順番に並べ直し、読みやすく表示
     selected.sort(key=lambda item: item[0])
+    parts: list[str] = []
 
-    parts = []
     for _, sentence in selected:
         sentence = sentence.strip()
         if sentence and sentence[-1] not in "。！？!?…":
@@ -292,7 +306,10 @@ def fallback_summary(title: str, description: str) -> str:
 
     if description:
         sentences = split_into_sentences(description)
-        usable = [sentence for sentence in sentences if not is_unhelpful(sentence)]
+        usable = [
+            sentence for sentence in sentences
+            if not is_unhelpful(sentence)
+        ]
         source = " ".join(usable[:3]) if usable else description
         return source[:SUMMARY_MAX_CHARS] + (
             "…" if len(source) > SUMMARY_MAX_CHARS else ""
@@ -300,7 +317,8 @@ def fallback_summary(title: str, description: str) -> str:
 
     return (
         f"「{title}」に関する新着動画です。"
-        "字幕と概要欄から内容を取得できなかったため、詳細はリンク先で確認してください。"
+        "字幕と概要欄から内容を取得できなかったため、"
+        "詳細はリンク先で確認してください。"
     )
 
 
@@ -330,10 +348,23 @@ def get_thumbnail(entry: Any, video_id: str) -> str:
     return f"https://i.ytimg.com/vi/{video_id}/hqdefault.jpg"
 
 
+def can_reuse(existing: dict[str, Any] | None) -> bool:
+    return bool(
+        existing
+        and existing.get("summary")
+        and existing.get("summarySource") == "transcript_extractive"
+        and existing.get("transcriptStatus") == "ok"
+    )
+
+
 def update() -> None:
     channels = json.loads(CHANNELS_PATH.read_text(encoding="utf-8"))
+    existing_map = load_existing()
+
     videos: list[dict[str, Any]] = []
     errors: list[str] = []
+    fetched_count = 0
+    reused_count = 0
 
     for channel in channels:
         feed_url = RSS_TEMPLATE.format(channel_id=channel["channelId"])
@@ -364,24 +395,44 @@ def update() -> None:
                 description = media_group[0].get("media_description", "")
             description = clean_text(description or entry.get("summary", ""))
 
-            transcript, transcript_status = fetch_transcript(video_id)
+            existing = existing_map.get(video_id)
 
-            if transcript:
-                summary = extractive_summary(title, transcript)
+            if can_reuse(existing):
+                summary = existing["summary"]
                 summary_source = "transcript_extractive"
+                transcript_status = "ok"
+                priority = existing.get("priority", "medium")
+                tags = existing.get("tags", ["新着動画"])
+                reused_count += 1
             else:
-                summary = fallback_summary(title, description)
-                summary_source = "description_fallback"
+                # 連続アクセスを避けるため、字幕取得の前に少し待機
+                if fetched_count:
+                    time.sleep(
+                        random.uniform(
+                            TRANSCRIPT_WAIT_MIN,
+                            TRANSCRIPT_WAIT_MAX,
+                        )
+                    )
 
-            if not summary:
-                summary = fallback_summary(title, description)
-                summary_source = "description_fallback"
+                transcript, transcript_status = fetch_transcript(video_id)
+                fetched_count += 1
 
-            priority, tags = classify(
-                title,
-                summary,
-                channel.get("category", ""),
-            )
+                if transcript:
+                    summary = extractive_summary(title, transcript)
+                    summary_source = "transcript_extractive"
+                else:
+                    summary = fallback_summary(title, description)
+                    summary_source = "description_fallback"
+
+                if not summary:
+                    summary = fallback_summary(title, description)
+                    summary_source = "description_fallback"
+
+                priority, tags = classify(
+                    title,
+                    summary,
+                    channel.get("category", ""),
+                )
 
             videos.append(
                 {
@@ -420,7 +471,10 @@ def update() -> None:
         encoding="utf-8",
     )
 
-    print(f"{len(videos)}件を {OUTPUT_PATH} に保存しました。")
+    print(
+        f"{len(videos)}件を保存しました。"
+        f" 字幕取得={fetched_count}件、既存要約再利用={reused_count}件"
+    )
     if errors:
         print("エラー: " + " / ".join(errors), file=sys.stderr)
 
