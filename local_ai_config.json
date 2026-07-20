@@ -1,5 +1,5 @@
-﻿{
-    "maxSummariesPerRun":  4,
-    "model":  "qwen3:4b",
-    "maxTranscriptChars":  30000
+{
+  "model": "qwen3:1.7b",
+  "maxSummariesPerRun": 1,
+  "maxTranscriptChars": 12000
 }

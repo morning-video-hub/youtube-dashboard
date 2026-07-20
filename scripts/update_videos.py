@@ -37,8 +37,8 @@ MAX_VIDEOS_PER_CHANNEL = int(os.getenv("MAX_VIDEOS_PER_CHANNEL", "8"))
 TRANSCRIPT_WAIT_MIN = float(os.getenv("TRANSCRIPT_WAIT_MIN", "1.5"))
 TRANSCRIPT_WAIT_MAX = float(os.getenv("TRANSCRIPT_WAIT_MAX", "3.0"))
 
-DEFAULT_OLLAMA_MODEL = "qwen3:4b"
-DEFAULT_MAX_AI_SUMMARIES_PER_RUN = 4
+DEFAULT_OLLAMA_MODEL = "qwen3:1.7b"
+DEFAULT_MAX_AI_SUMMARIES_PER_RUN = 1
 OLLAMA_URL = os.getenv(
     "OLLAMA_URL",
     "http://localhost:11434/api/generate",
@@ -48,6 +48,7 @@ RSS_TEMPLATE = "https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}
 SUMMARY_VERSION = 2
 
 YTT_API = YouTubeTranscriptApi()
+IP_BLOCKED_FOR_RUN = False
 
 INTEREST_KEYWORDS = {
     "AI": ("ai", "生成ai", "chatgpt", "claude", "copilot", "エージェント"),
@@ -81,7 +82,7 @@ def load_local_config() -> dict[str, Any]:
 
     try:
         supplied = json.loads(
-            LOCAL_CONFIG_PATH.read_text(encoding="utf-8")
+            LOCAL_CONFIG_PATH.read_text(encoding="utf-8-sig")
         )
         defaults.update(supplied)
     except Exception as exc:
@@ -125,6 +126,11 @@ def format_timestamp(seconds: float) -> str:
 def fetch_transcript(
     video_id: str,
 ) -> tuple[list[dict[str, Any]], str]:
+    global IP_BLOCKED_FOR_RUN
+
+    if IP_BLOCKED_FOR_RUN:
+        return [], "ip_blocked"
+
     errors: list[str] = []
 
     def convert(fetched: Any) -> list[dict[str, Any]]:
@@ -154,6 +160,20 @@ def fetch_transcript(
             return snippets, "ok"
     except Exception as exc:
         errors.append(str(exc))
+        if any(
+            marker in str(exc)
+            for marker in (
+                "blocking requests from your IP",
+                "RequestBlocked",
+                "IpBlocked",
+            )
+        ):
+            IP_BLOCKED_FOR_RUN = True
+            print(
+                "YouTubeのIP制限を検知したため、今回の追加字幕取得を停止します。",
+                file=sys.stderr,
+            )
+            return [], "ip_blocked"
 
     try:
         transcript_list = YTT_API.list(video_id)
@@ -164,6 +184,20 @@ def fetch_transcript(
             return snippets, "ok"
     except Exception as exc:
         errors.append(str(exc))
+        if any(
+            marker in str(exc)
+            for marker in (
+                "blocking requests from your IP",
+                "RequestBlocked",
+                "IpBlocked",
+            )
+        ):
+            IP_BLOCKED_FOR_RUN = True
+            print(
+                "YouTubeのIP制限を検知したため、今回の追加字幕取得を停止します。",
+                file=sys.stderr,
+            )
+            return [], "ip_blocked"
 
     detail = " / ".join(errors)
     print(
