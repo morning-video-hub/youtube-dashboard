@@ -55,7 +55,7 @@
       gap: 12px;
       margin-bottom: 18px;
     }
-    .stat, .toolbar, .notice, .video-card {
+    .stat, .toolbar, .video-card {
       background: var(--panel);
       border: 1px solid var(--line);
       border-radius: 14px;
@@ -63,13 +63,7 @@
     .stat { padding: 17px; }
     .stat-label { color: var(--muted); font-size: 13px; }
     .stat-value { font-size: 27px; font-weight: 750; margin-top: 5px; }
-    .notice {
-      padding: 16px 18px;
-      margin-bottom: 16px;
-      line-height: 1.65;
-    }
-    .notice strong { display: block; margin-bottom: 4px; }
-    .toolbar {
+.toolbar {
       display: grid;
       grid-template-columns: 1fr 230px;
       gap: 10px;
@@ -174,13 +168,7 @@
     <div class="stat"><div class="stat-label">取得動画</div><div class="stat-value" id="videoCount">—</div></div>
 <div class="stat"><div class="stat-label">合計再生時間</div><div class="stat-value" id="totalMinutes">—</div></div>
   </section>
-
-  <section class="notice" id="recommendation">
-    <strong>今日1本だけ見るなら</strong>
-    データの更新後に表示します。
-  </section>
-
-  <section class="toolbar">
+<section class="toolbar">
     <input id="searchBox" type="search" placeholder="タイトル・チャンネル・要約を検索">
     <select id="channelFilter"><option value="">すべてのチャンネル</option></select>
 </section>
@@ -272,14 +260,7 @@ function escapeHtml(value) {
         option.textContent = name;
         select.appendChild(option);
       });
-
-      const best = videos[0];
-      document.getElementById("recommendation").innerHTML = best
-        ? `<strong>今日1本だけ見るなら</strong>${escapeHtml(best.title)}<br>
-           <span style="color:#6b7280">${escapeHtml(best.summary || "")}</span>`
-        : `<strong>初回更新待ち</strong>${escapeHtml(data.message || "動画データがありません。")}`;
-
-      render();
+render();
     } catch (error) {
       document.getElementById("updatedAt").textContent = "データ読込エラー";
       list.innerHTML = `
