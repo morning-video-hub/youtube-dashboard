@@ -139,7 +139,219 @@
   .thumb { width: 100%; }
 
     }
-  </style>
+  
+/* COMPACT_GRID_START */
+/*
+  一覧性重視のレスポンシブカード表示
+  大画面4列 / 標準PC3列 / タブレット2列 / スマートフォン1列
+*/
+.header-inner,
+main {
+  max-width: 1680px;
+}
+
+main {
+  margin-top: 16px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.toolbar {
+  position: sticky;
+  top: 88px;
+  z-index: 8;
+  margin-bottom: 14px;
+  padding: 10px;
+  box-shadow: 0 8px 24px rgba(31, 41, 55, .07);
+}
+
+.video-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  align-items: stretch;
+}
+
+.video-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100%;
+  padding: 0 0 13px;
+  gap: 0;
+  overflow: hidden;
+  align-items: stretch;
+}
+
+.video-card > .thumb,
+.video-card > .thumb-link {
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+.thumb-link {
+  display: block;
+  line-height: 0;
+  overflow: hidden;
+  background: #e5e7eb;
+}
+
+.thumb {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 0;
+  cursor: pointer;
+  transition: transform .18s ease;
+}
+
+.thumb-link:hover .thumb,
+.video-card > .thumb:hover {
+  transform: scale(1.02);
+}
+
+.video-card > div:not(.actions) {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 12px 13px 0;
+}
+
+.channel {
+  margin-bottom: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.title {
+  display: -webkit-box;
+  min-height: 2.8em;
+  margin: 0 0 7px;
+  overflow: hidden;
+  font-size: 16px;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.meta {
+  margin-bottom: 8px;
+  gap: 4px 9px;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.meta span:nth-child(2) {
+  display: none;
+}
+
+.summary {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  font-size: 13.5px;
+  line-height: 1.58;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 8;
+}
+
+.summary.expanded {
+  display: block;
+  overflow: visible;
+}
+
+.summary-toggle {
+  align-self: flex-start;
+  margin: 8px 0 10px;
+  padding: 5px 9px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #fff;
+  color: var(--accent);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.summary-toggle:hover {
+  background: #eff6ff;
+}
+
+.summary-toggle:focus-visible,
+.thumb-link:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, .35);
+  outline-offset: 2px;
+}
+
+.tags {
+  max-height: 28px;
+  margin-top: auto;
+  overflow: hidden;
+  gap: 5px;
+}
+
+.tag {
+  padding: 4px 7px;
+  font-size: 11px;
+}
+
+/* 旧版の右側操作欄が残っている場合も、一覧幅を優先して非表示 */
+.actions {
+  display: none;
+}
+
+.empty {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 1450px) {
+  .video-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1040px) {
+  .video-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .toolbar {
+    top: 78px;
+  }
+}
+
+@media (max-width: 680px) {
+  .header-inner {
+    padding: 14px 15px;
+  }
+
+  main {
+    margin-top: 12px;
+    padding-left: 11px;
+    padding-right: 11px;
+  }
+
+  .toolbar {
+    position: static;
+  }
+
+  .video-list {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .summary {
+    -webkit-line-clamp: 7;
+  }
+}
+/* COMPACT_GRID_END */
+
+</style>
 </head>
 <body>
 <header>
@@ -214,6 +426,7 @@ function escapeHtml(value) {
             <span>${v.durationMinutes ? `再生時間: ${escapeHtml(v.durationMinutes)}分` : "再生時間: 未取得"}</span>
           </div>
           <p class="summary">${escapeHtml(v.summary || "要約はありません。")}</p>
+          <button class="summary-toggle" type="button" aria-expanded="false" onclick="const s=this.previousElementSibling;const open=s.classList.toggle('expanded');this.textContent=open?'折りたたむ':'全文表示';this.setAttribute('aria-expanded',String(open));">全文表示</button>
           <div class="tags">${(v.tags || []).map(tag =>
             `<span class="tag">${escapeHtml(tag)}</span>`
           ).join("")}</div>
