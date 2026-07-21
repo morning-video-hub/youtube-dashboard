@@ -88,18 +88,35 @@
     .video-list { display: grid; gap: 13px; }
     .video-card {
       display: grid;
-      grid-template-columns: 210px minmax(0, 1fr) 135px;
+      grid-template-columns: 210px minmax(0, 1fr);
       gap: 17px;
       padding: 16px;
       align-items: start;
     }
-    .thumb {
+    .thumb-link {
+    display: block;
+    width: 210px;
+    border-radius: 10px;
+    line-height: 0;
+    overflow: hidden;
+  }
+  .thumb-link:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+  }
+  .thumb-link:hover .thumb {
+    transform: scale(1.02);
+  }
+  .thumb {
       width: 210px;
       aspect-ratio: 16/9;
       object-fit: cover;
       background: #e5e7eb;
       border-radius: 10px;
-    }
+      display: block;
+    cursor: pointer;
+    transition: transform .18s ease;
+  }
     .channel { color: var(--muted); font-size: 13px; margin-bottom: 3px; }
     .title { margin: 0 0 7px; font-size: 18px; line-height: 1.45; }
     .meta {
@@ -118,18 +135,8 @@
       background: #f3f4f6;
       font-size: 12px;
     }
-    .actions { text-align: right; }
-.watch {
-      display: inline-block;
-      background: var(--accent);
-      color: #fff;
-      padding: 10px 13px;
-      border-radius: 9px;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 650;
-    }
-    .empty {
+
+.empty {
       padding: 44px 22px;
       text-align: center;
       color: var(--muted);
@@ -143,8 +150,9 @@
       .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .toolbar { grid-template-columns: 1fr; }
       .video-card { grid-template-columns: 1fr; }
-      .thumb { width: 100%; }
-      .actions { text-align: left; }
+      .thumb-link { width: 100%; }
+  .thumb { width: 100%; }
+
     }
   </style>
 </head>
@@ -221,7 +229,9 @@ function escapeHtml(value) {
 
     list.innerHTML = filtered.map(v => `
       <article class="video-card">
-        <img class="thumb" src="${escapeHtml(v.thumbnail)}" alt="" loading="lazy">
+        <a class="thumb-link" href="${escapeHtml(v.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(v.title)}をYouTubeで見る">
+          <img class="thumb" src="${escapeHtml(v.thumbnail)}" alt="${escapeHtml(v.title)}" loading="lazy">
+        </a>
         <div>
           <div class="channel">${escapeHtml(v.channel)}</div>
           <h2 class="title">${escapeHtml(v.title)}</h2>
@@ -234,11 +244,7 @@ function escapeHtml(value) {
             `<span class="tag">${escapeHtml(tag)}</span>`
           ).join("")}</div>
         </div>
-        <div class="actions">
-<a class="watch" href="${escapeHtml(v.url)}"
-             target="_blank" rel="noopener noreferrer">YouTubeで見る</a>
-        </div>
-      </article>
+</article>
     `).join("");
   }
 
