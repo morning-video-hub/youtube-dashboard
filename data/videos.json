@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-21T11:28:02.574010+00:00",
+  "updatedAt": "2026-07-21T20:24:42.308182+00:00",
   "channelCount": 2,
   "videos": [
     {
@@ -65,17 +65,22 @@
       "url": "https://www.youtube.com/watch?v=DF1D8NEeK8c",
       "thumbnail": "https://i.ytimg.com/vi/DF1D8NEeK8c/hqdefault.jpg",
       "description": "◆ ニコニコチャンネル ◆【TeamモハP note】 #イギリス #ニート #世界経済",
-      "summary": "◆ ニコニコチャンネル ◆【TeamモハP note】 #イギリス #ニート #世界経済",
-      "keyPoints": [],
-      "conclusion": "",
-      "priority": "medium",
+      "summary": "【概要】イギリスでニートが100万人を超えて増加し、世界に広がる失業問題が深刻化している。AIやAIによる失業のリスクも注目される。 【重要点】①ニートの数が100万人を突破し、2031年には120万人に達する見込み。 ②AIによる失業のリスクが高まり、日本やインドでも同様な状況が見られる。 ③政府は職業訓練を実施し、若者にスキルをつける対策を講じている。 【結論】世界中でニートの増加が進み、AIによる失業のリスクが高まっている。政府や企業の対策が重要だ。",
+      "keyPoints": [
+        "ニートの数が100万人を突破し、2031年には120万人に達する見込み。",
+        "AIによる失業のリスクが高まり、日本やインドでも同様な状況が見られる。",
+        "政府は職業訓練を実施し、若者にスキルをつける対策を講じている。"
+      ],
+      "conclusion": "世界中でニートの増加が進み、AIによる失業のリスクが高まっている。政府や企業の対策が重要だ。",
+      "priority": "high",
       "tags": [
+        "AI",
         "資産管理"
       ],
-      "summarySource": "description_fallback",
-      "summaryVersion": 0,
-      "summaryModel": "",
-      "transcriptStatus": "unavailable",
+      "summarySource": "local_ai_ollama",
+      "summaryVersion": 2,
+      "summaryModel": "qwen3:1.7b",
+      "transcriptStatus": "ok",
       "durationMinutes": null
     },
     {
