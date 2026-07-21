@@ -13,9 +13,6 @@
       --muted: #6b7280;
       --line: #e5e7eb;
       --accent: #2563eb;
-      --high: #b91c1c;
-      --medium: #b45309;
-      --low: #15803d;
     }
     * { box-sizing: border-box; }
     body {
@@ -54,7 +51,7 @@
     main { max-width: 1180px; margin: 22px auto; padding: 0 20px 48px; }
     .stats {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
       margin-bottom: 18px;
     }
@@ -74,7 +71,7 @@
     .notice strong { display: block; margin-bottom: 4px; }
     .toolbar {
       display: grid;
-      grid-template-columns: 1fr 230px 170px;
+      grid-template-columns: 1fr 230px;
       gap: 10px;
       padding: 13px;
       margin-bottom: 16px;
@@ -122,18 +119,7 @@
       font-size: 12px;
     }
     .actions { text-align: right; }
-    .priority {
-      display: inline-block;
-      color: #fff;
-      padding: 5px 9px;
-      border-radius: 999px;
-      font-size: 12px;
-      margin-bottom: 11px;
-    }
-    .priority.high { background: var(--high); }
-    .priority.medium { background: var(--medium); }
-    .priority.low { background: var(--low); }
-    .watch {
+.watch {
       display: inline-block;
       background: var(--accent);
       color: #fff;
@@ -178,8 +164,7 @@
   <section class="stats">
     <div class="stat"><div class="stat-label">登録チャンネル</div><div class="stat-value" id="channelCount">—</div></div>
     <div class="stat"><div class="stat-label">取得動画</div><div class="stat-value" id="videoCount">—</div></div>
-    <div class="stat"><div class="stat-label">高優先度</div><div class="stat-value" id="highCount">—</div></div>
-    <div class="stat"><div class="stat-label">合計再生時間</div><div class="stat-value" id="totalMinutes">—</div></div>
+<div class="stat"><div class="stat-label">合計再生時間</div><div class="stat-value" id="totalMinutes">—</div></div>
   </section>
 
   <section class="notice" id="recommendation">
@@ -190,27 +175,14 @@
   <section class="toolbar">
     <input id="searchBox" type="search" placeholder="タイトル・チャンネル・要約を検索">
     <select id="channelFilter"><option value="">すべてのチャンネル</option></select>
-    <select id="priorityFilter">
-      <option value="">すべての優先度</option>
-      <option value="high">高</option>
-      <option value="medium">中</option>
-      <option value="low">低</option>
-    </select>
-  </section>
+</section>
 
   <section id="videoList" class="video-list"></section>
 </main>
 
 <script>
   let videos = [];
-
-  const priorityLabel = {
-    high: "高優先度",
-    medium: "中優先度",
-    low: "低優先度"
-  };
-
-  function escapeHtml(value) {
+function escapeHtml(value) {
     return String(value ?? "").replace(/[&<>"']/g, ch => ({
       "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
     }[ch]));
@@ -227,16 +199,13 @@
   function render() {
     const query = document.getElementById("searchBox").value.trim().toLowerCase();
     const channel = document.getElementById("channelFilter").value;
-    const priority = document.getElementById("priorityFilter").value;
-
     const filtered = videos.filter(v => {
       const target = [
         v.channel, v.title, v.summary, ...(v.tags || [])
       ].join(" ").toLowerCase();
 
       return (!query || target.includes(query))
-        && (!channel || v.channel === channel)
-        && (!priority || v.priority === priority);
+        && (!channel || v.channel === channel);
     });
 
     const list = document.getElementById("videoList");
@@ -266,10 +235,7 @@
           ).join("")}</div>
         </div>
         <div class="actions">
-          <span class="priority ${escapeHtml(v.priority || "medium")}">
-            ${escapeHtml(priorityLabel[v.priority] || "中優先度")}
-          </span><br>
-          <a class="watch" href="${escapeHtml(v.url)}"
+<a class="watch" href="${escapeHtml(v.url)}"
              target="_blank" rel="noopener noreferrer">YouTubeで見る</a>
         </div>
       </article>
@@ -287,9 +253,6 @@
 
       document.getElementById("channelCount").textContent = data.channelCount ?? 0;
       document.getElementById("videoCount").textContent = videos.length;
-      document.getElementById("highCount").textContent =
-        videos.filter(v => v.priority === "high").length;
-
       const total = videos.reduce((sum, v) => sum + Number(v.durationMinutes || 0), 0);
       document.getElementById("totalMinutes").textContent = total ? `${total}分` : "—";
       document.getElementById("updatedAt").textContent =
@@ -304,7 +267,7 @@
         select.appendChild(option);
       });
 
-      const best = videos.find(v => v.priority === "high") || videos[0];
+      const best = videos[0];
       document.getElementById("recommendation").innerHTML = best
         ? `<strong>今日1本だけ見るなら</strong>${escapeHtml(best.title)}<br>
            <span style="color:#6b7280">${escapeHtml(best.summary || "")}</span>`
@@ -321,7 +284,7 @@
     }
   }
 
-  ["searchBox", "channelFilter", "priorityFilter"].forEach(id => {
+  ["searchBox", "channelFilter"].forEach(id => {
     document.getElementById(id).addEventListener("input", render);
   });
 
