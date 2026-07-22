@@ -1,7 +1,92 @@
 {
-  "updatedAt": "2026-07-21T20:24:42.308182+00:00",
+  "updatedAt": "2026-07-22T20:31:08.517923+00:00",
   "channelCount": 2,
   "videos": [
+    {
+      "videoId": "Ijyfr7ud_r0",
+      "channel": "Moha-P World News",
+      "channelHandle": "@moha-p",
+      "title": "【韓国経済】成長見通しは引き上げるも、雇用は下方修正！半導体好調でも雇用は伸びない韓国経済の厳しい状況！",
+      "published": "2026-07-22T10:00:18+00:00",
+      "url": "https://www.youtube.com/watch?v=Ijyfr7ud_r0",
+      "thumbnail": "https://i.ytimg.com/vi/Ijyfr7ud_r0/hqdefault.jpg",
+      "description": "◆ ニコニコチャンネル ◆【TeamモハP note】 #韓国 #雇用 #半導体",
+      "summary": "【概要】韓国経済は成長見通しを引き上げつつも雇用は下方修正。反動体産業の設備投資が雇用に影響し、若者雇用率が低下。政府は若者雇用を促進する計画を発表しているが、実現可能性が低い。株価と通貨の変動も関与している。 【重要点】①反動体産業の設備投資が雇用に悪影響。10億円の投資で2.4万人の雇用が生まれるが、実際には雇用は伸びない。 ②若者雇用率は43.8%で2年以上低下。政府は2030年までに10万人の若者雇用を目標にしているが、実現可能性が低い。 ③株価と通貨の変動が経済に影響。韓国円が上昇し、株価が下落しているが、反動体需要が今後どうなるかが鍵。 【結論】韓国経済は成長見通しを引き上げつつも雇用は伸び悩む。若者雇用の不足と株価の変動が経済に影響し、今後の見通しは不明。",
+      "keyPoints": [
+        "反動体産業の設備投資が雇用に悪影響。10億円の投資で2.4万人の雇用が生まれるが、実際には雇用は伸びない。",
+        "若者雇用率は43.8%で2年以上低下。政府は2030年までに10万人の若者雇用を目標にしているが、実現可能性が低い。",
+        "株価と通貨の変動が経済に影響。韓国円が上昇し、株価が下落しているが、反動体需要が今後どうなるかが鍵。"
+      ],
+      "conclusion": "韓国経済は成長見通しを引き上げつつも雇用は伸び悩む。若者雇用の不足と株価の変動が経済に影響し、今後の見通しは不明。",
+      "priority": "high",
+      "tags": [
+        "資産管理",
+        "日本経済",
+        "国際情勢"
+      ],
+      "summarySource": "local_ai_ollama",
+      "summaryVersion": 2,
+      "summaryModel": "qwen3:1.7b",
+      "transcriptStatus": "ok",
+      "durationMinutes": null
+    },
+    {
+      "videoId": "20fzfeX2PVg",
+      "channel": "海外Yパパラジオ 世界を読み解く",
+      "channelHandle": "@neko_Ypapa",
+      "title": "【ガチ講義】君はまだ分散投資の本当の意味を知らない",
+      "published": "2026-07-22T08:56:27+00:00",
+      "url": "https://www.youtube.com/watch?v=20fzfeX2PVg",
+      "thumbnail": "https://i.ytimg.com/vi/20fzfeX2PVg/hqdefault.jpg",
+      "description": "卵を一つのカゴに盛るな――投資でいちばん有名な教えなのに、なぜ意味があるのかを説明できる人はほとんどいません。 分散すると、期待値はどれだけ増えるのでしょうか。 答えは、1ミリも増えません。それは証明された定理です。それでも分散が効くのは、あなたが体験するのが期待値ではなく、掛け算で積み上がる時間の平均だからです。 この動画では、資産管理の現場で分散が本当に何をしているのかを、 期待値はあなたが体験しない数字 人生は足し算ではなく掛け算 壊れ方が同じものは分散にならない という3つの柱で、コイン投げの実験やハリー・マーコウィッツの言葉も交えながら具体的に解説します。 チャンネル登録・高評価もよろしくお願いします。 #分散投資 #資産運用 #期待値 #複利 #リスク管理",
+      "summary": "【概要】分散投資は期待値が変わらないが、リスクが下がるという理屈で、資産の分散をすることでリスクを減らすことが重要です。 【重要点】①分散はリスクを減らす技術で、期待値は変わらないが、全滅確率が下がる ②分散でリスクが下がる理由は、複数の資産を分けておくことで、一部が全滅しても全体は残る ③分散は「機下平均」を削減する技術で、リスクを取る価値が高くなる 【結論】分散投資はリスクを減らすための技術で、期待値は変わらないが、全滅確率が下がる",
+      "keyPoints": [
+        "分散はリスクを減らす技術で、期待値は変わらないが、全滅確率が下がる",
+        "分散でリスクが下がる理由は、複数の資産を分けておくことで、一部が全滅しても全体は残る",
+        "分散は「機下平均」を削減する技術で、リスクを取る価値が高くなる"
+      ],
+      "conclusion": "分散投資はリスクを減らすための技術で、期待値は変わらないが、全滅確率が下がる",
+      "priority": "high",
+      "tags": [
+        "AI",
+        "資産管理",
+        "国際情勢"
+      ],
+      "summarySource": "local_ai_ollama",
+      "summaryVersion": 2,
+      "summaryModel": "qwen3:1.7b",
+      "transcriptStatus": "ok",
+      "durationMinutes": null
+    },
+    {
+      "videoId": "oTpvEv7uKbo",
+      "channel": "海外Yパパラジオ 世界を読み解く",
+      "channelHandle": "@neko_Ypapa",
+      "title": "中田の節税の1000倍やばい。日本が法人税取りこぼしまくってるの知ってますか？",
+      "published": "2026-07-21T20:33:47+00:00",
+      "url": "https://www.youtube.com/watch?v=oTpvEv7uKbo",
+      "thumbnail": "https://i.ytimg.com/vi/oTpvEv7uKbo/hqdefault.jpg",
+      "description": "日本の広告主が払ったお金に、日本の税金は落ちていない――そして日本のグーグルは、株式会社ですらありません。 なぜ、こんなことが起きるのでしょうか。 答えは、だいたい100年前に作られた国際課税のルールにあります。物理的な拠点がなければ課税できない。工場の時代に筋が通っていたルールが、ネットの商売ではそのまま抜け道になりました。日本からアメリカのIT企業へ流れるお金は、いま年間6.7兆円。10年後には28兆円という試算まで出ています。 この動画では、 なぜ日本の税金が落ちないのかという仕組み 企業は悪者なのかという話 世界がルールを直そうとして、どうなったか という3つの柱を、カナダが3日で白旗を上げた事例も交えながら具体的に解説します。 チャンネル登録・高評価もよろしくお願いします。 #デジタル赤字 #法人税 #GAFA #国際課税 #シンガポール移住",
+      "summary": "【概要】日本の法人税が海外に課税され、税金の流れが複雑化している状況を解説。国際的なルールが変化し、国際的なデジタル勢力の課税が進むと予測。 【重要点】①日本の法人税は海外に課税され、税金の流れが複雑化している。 ②Googleなどの大企業は海外に拠点を置くことで、税金の流れが複雑化している。 ③国際的なルールが変化し、国際的なデジタル勢力の課税が進むと予測。 【結論】国際的なルールの変化が、デジタル勢力の課税に影響を与える可能性がある。",
+      "keyPoints": [
+        "日本の法人税は海外に課税され、税金の流れが複雑化している。",
+        "Googleなどの大企業は海外に拠点を置くことで、税金の流れが複雑化している。",
+        "国際的なルールが変化し、国際的なデジタル勢力の課税が進むと予測。"
+      ],
+      "conclusion": "国際的なルールの変化が、デジタル勢力の課税に影響を与える可能性がある。",
+      "priority": "high",
+      "tags": [
+        "AI",
+        "資産管理",
+        "国際情勢",
+        "行政DX"
+      ],
+      "summarySource": "local_ai_ollama",
+      "summaryVersion": 2,
+      "summaryModel": "qwen3:1.7b",
+      "transcriptStatus": "ok",
+      "durationMinutes": null
+    },
     {
       "videoId": "pNR3tLgmLoE",
       "channel": "Moha-P World News",
@@ -250,54 +335,6 @@
       "durationMinutes": null
     },
     {
-      "videoId": "2BIkSvTFJn0",
-      "channel": "海外Yパパラジオ 世界を読み解く",
-      "channelHandle": "@neko_Ypapa",
-      "title": "【ゆる怪談】うちの犬に悪魔が憑りついた話",
-      "published": "2026-07-17T08:50:29+00:00",
-      "url": "https://www.youtube.com/watch?v=2BIkSvTFJn0",
-      "thumbnail": "https://i.ytimg.com/vi/2BIkSvTFJn0/hqdefault.jpg",
-      "description": "これは、僕が高校生の頃に実際に体験した話です――ある日を境に、うちの犬が「悪魔の踊り」を踊り出しました。 真っ黒でおとなしかった天使のような子犬に、いったい何が起きたのか。 夜な夜な繰り返される奇妙な律動、そして親友の片想いの相手が飼う白い犬リリイちゃん。すべては、あの二月の夕方に向かって静かに進んでいました。 この動画では、 天使だった子犬 夜に始まった踊り リリイちゃんとの再会 という流れを、当時の記憶をたどりながら本気の怪談として語ります。 チャンネル登録・高評価もよろしくお願いします。 #実話怪談 #真夏の怪談 #犬 #怖い話 #海外Yパパ",
-      "summary": "これは、僕が高校生の頃に実際に体験した話です――ある日を境に、うちの犬が「悪魔の踊り」を踊り出しました。 真っ黒でおとなしかった天使のような子犬に、いったい何が起きたのか。 夜な夜な繰り返される奇妙な律動、そして親友の片想いの相手が飼う白い犬リリイちゃん。すべては、あの二月の夕方に向かって静かに進んでいました。 この動画では、 天使だった子犬 夜に始まった踊り リリイちゃんとの再会 という流れを、当時の記憶をたどりながら本気の怪談として語ります。 チャンネル登録・高評価もよろしくお願いします。 #実話怪談 #真夏の怪談 #犬 #怖い話 #海外Yパパ",
-      "keyPoints": [],
-      "conclusion": "",
-      "priority": "high",
-      "tags": [
-        "AI",
-        "資産管理",
-        "国際情勢"
-      ],
-      "summarySource": "description_fallback",
-      "summaryVersion": 0,
-      "summaryModel": "",
-      "transcriptStatus": "unavailable",
-      "durationMinutes": null
-    },
-    {
-      "videoId": "pTRSl6Bg5ic",
-      "channel": "海外Yパパラジオ 世界を読み解く",
-      "channelHandle": "@neko_Ypapa",
-      "title": "AIリテラシーが低い人の考え方４選。偉そうですみません。",
-      "published": "2026-07-16T20:37:28+00:00",
-      "url": "https://www.youtube.com/watch?v=pTRSl6Bg5ic",
-      "thumbnail": "https://i.ytimg.com/vi/pTRSl6Bg5ic/hqdefault.jpg",
-      "description": "「その声、AIですか？」――この質問に、僕はいつも答えに詰まります。 では、なぜイエスともノーとも言えないのか。 そこには、これからの時代にAIとうまく付き合える人と、なんとなく損をしていく人の境目が隠れていました。プロンプトの書き方でもツールの知識でもなく、もっと手前にある「頭の構え」の話です。 この動画では、AIリテラシーの低い人に共通する、 なんでもAIとひとくくりにする ゼロか百かで考える AIなら何でも一発で簡単だと思う 主語が自分じゃなくなっている という4つの特徴を、僕の声の作り方も実際にバラしながら具体的に解説します。 チャンネル登録・高評価もよろしくお願いします。 #AIリテラシー #AI活用 #思考法 #生成AI #働き方",
-      "summary": "「その声、AIですか？」――この質問に、僕はいつも答えに詰まります。 では、なぜイエスともノーとも言えないのか。 そこには、これからの時代にAIとうまく付き合える人と、なんとなく損をしていく人の境目が隠れていました。プロンプトの書き方でもツールの知識でもなく、もっと手前にある「頭の構え」の話です。 この動画では、AIリテラシーの低い人に共通する、 なんでもAIとひとくくりにする ゼロか百かで考える AIなら何でも一発で簡単だと思う 主語が自分じゃなくなっている という4つの特徴を、僕の声の作り方も実際にバラしながら具体的に解説します。 チャンネル登録・高評価もよろしくお願いします。 #AIリテラシー #AI活用 #思考法 #生成AI #働き方",
-      "keyPoints": [],
-      "conclusion": "",
-      "priority": "high",
-      "tags": [
-        "AI",
-        "資産管理",
-        "国際情勢"
-      ],
-      "summarySource": "description_fallback",
-      "summaryVersion": 0,
-      "summaryModel": "",
-      "transcriptStatus": "unavailable",
-      "durationMinutes": null
-    },
-    {
       "videoId": "Pwho2bnLas4",
       "channel": "Moha-P World News",
       "channelHandle": "@moha-p",
@@ -358,29 +395,6 @@
       "priority": "medium",
       "tags": [
         "資産管理"
-      ],
-      "summarySource": "description_fallback",
-      "summaryVersion": 0,
-      "summaryModel": "",
-      "transcriptStatus": "unavailable",
-      "durationMinutes": null
-    },
-    {
-      "videoId": "ZeuMv2JN2Us",
-      "channel": "Moha-P World News",
-      "channelHandle": "@moha-p",
-      "title": "【韓国】日本の機関投資家が韓国国債を7500億円買い越し！それでもウォン安が続く韓国経済",
-      "published": "2026-07-13T10:00:02+00:00",
-      "url": "https://www.youtube.com/watch?v=ZeuMv2JN2Us",
-      "thumbnail": "https://i.ytimg.com/vi/ZeuMv2JN2Us/hqdefault.jpg",
-      "description": "◆ ニコニコチャンネル ◆【TeamモハP note】 #韓国 #金融市場 #fx",
-      "summary": "◆ ニコニコチャンネル ◆【TeamモハP note】 #韓国 #金融市場 #fx",
-      "keyPoints": [],
-      "conclusion": "",
-      "priority": "high",
-      "tags": [
-        "資産管理",
-        "国際情勢"
       ],
       "summarySource": "description_fallback",
       "summaryVersion": 0,
